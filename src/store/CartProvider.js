@@ -52,17 +52,16 @@ const cartReducer = (state, action) => {
   return defaultCartState;
 };
 
-const CartProvider = () => {
+const CartProvider = (props) => {
   const [cartState, dispatchCartAction] = useReducer(
     cartReducer,
     defaultCartState
   );
-
   const addItemToCartHandler = (item) => {
-    dispatchCartAction({ type: 'ADD', item });
+    dispatchCartAction({ type: 'ADD', item: item });
   };
   const removeItemFromCartHandler = (id) => {
-    dispatchCartAction({ type: 'REMOVE', id });
+    dispatchCartAction({ type: 'REMOVE', id: id });
   };
   const cartContext = {
     items: cartState.items,
@@ -71,7 +70,9 @@ const CartProvider = () => {
     removeItem: removeItemFromCartHandler,
   };
   return (
-    <CartContext.Provider value={cartContext}>{children}</CartContext.Provider>
+    <CartContext.Provider value={cartContext}>
+      {props.children}
+    </CartContext.Provider>
   );
 };
 
